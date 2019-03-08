@@ -1,0 +1,150 @@
+Queries:
+
+1- create view authcles as select articles.author, articles.title, articles.slug, articles.time, articles.id, authors.name from articles join authors on articles.author = authors.id;
+
+
+2- create view bad_clicks as (SELECT date(time), COUNT(*) AS bad_c from log where status = '404 NOT FOUND' group by date(time) order by date(time));
+
+
+3- create view all_clicks as (SELECT date(time), COUNT(*) AS all_c from log group by date(time) order by date(time));
+
+
+4- create view clicksbg as (select * from all_clicks join bad_clicks using (date));
+
+
+5- create view clicksbg_h as (select * from clicksbg where 1/(all_c/100) < (bad_c*100)/all_c);
+_______________________________________________________________________
+
+views tables:
+
+1-authcles:
+select * from authcles;
+author |               title                |           slug            |             time              | id |          name         
+--------+------------------------------------+---------------------------+-------------------------------+----+------------------------
+      3 | Bad things gone, say good people   | bad-things-gone           | 2016-08-15 18:55:10.814316+00 | 23 | Anonymous Contributor
+      4 | Balloon goons doomed               | balloon-goons-doomed      | 2016-08-15 18:55:10.814316+00 | 24 | Markoff Chaney
+      1 | Bears love berries, alleges bear   | bears-love-berries        | 2016-08-15 18:55:10.814316+00 | 25 | Ursula La Multa
+      2 | Candidate is jerk, alleges rival   | candidate-is-jerk         | 2016-08-15 18:55:10.814316+00 | 26 | Rudolf von Treppenwitz
+      1 | Goats eat Google's lawn            | goats-eat-googles         | 2016-08-15 18:55:10.814316+00 | 27 | Ursula La Multa
+      1 | Media obsessed with bears          | media-obsessed-with-bears | 2016-08-15 18:55:10.814316+00 | 28 | Ursula La Multa
+      2 | Trouble for troubled troublemakers | trouble-for-troubled      | 2016-08-15 18:55:10.814316+00 | 30 | Rudolf von Treppenwitz
+      1 | There are a lot of bears           | so-many-bears             | 2016-08-15 18:55:10.814316+00 | 29 | Ursula La Multa
+(8 rows)
+
+select * from bad_clicks;
+2- bad_clicks:
+    date    | bad_c
+------------+-------
+ 2016-07-01 |   274
+ 2016-07-02 |   389
+ 2016-07-03 |   401
+ 2016-07-04 |   380
+ 2016-07-05 |   423
+ 2016-07-06 |   420
+ 2016-07-07 |   360
+ 2016-07-08 |   418
+ 2016-07-09 |   410
+ 2016-07-10 |   371
+ 2016-07-11 |   403
+ 2016-07-12 |   373
+ 2016-07-13 |   383
+ 2016-07-14 |   383
+ 2016-07-15 |   408
+ 2016-07-16 |   374
+ 2016-07-17 |  1265
+ 2016-07-18 |   374
+ 2016-07-19 |   433
+ 2016-07-20 |   383
+ 2016-07-21 |   418
+ 2016-07-22 |   406
+ 2016-07-23 |   373
+ 2016-07-24 |   431
+ 2016-07-25 |   391
+ 2016-07-26 |   396
+ 2016-07-27 |   367
+ 2016-07-28 |   393
+ 2016-07-29 |   382
+ 2016-07-30 |   397
+ 2016-07-31 |   329
+
+
+select * from all_clicks;
+3-all_clicks:
+    date    | all_c
+------------+-------
+ 2016-07-01 | 38705
+ 2016-07-02 | 55200
+ 2016-07-03 | 54866
+ 2016-07-04 | 54903
+ 2016-07-05 | 54585
+ 2016-07-06 | 54774
+ 2016-07-07 | 54740
+ 2016-07-08 | 55084
+ 2016-07-09 | 55236
+ 2016-07-10 | 54489
+ 2016-07-11 | 54497
+ 2016-07-12 | 54839
+ 2016-07-13 | 55180
+ 2016-07-14 | 55196
+ 2016-07-15 | 54962
+ 2016-07-16 | 54498
+ 2016-07-17 | 55907
+ 2016-07-18 | 55589
+ 2016-07-19 | 55341
+ 2016-07-20 | 54557
+ 2016-07-21 | 55241
+ 2016-07-22 | 55206
+ 2016-07-23 | 54894
+ 2016-07-24 | 55100
+ 2016-07-25 | 54613
+ 2016-07-26 | 54378
+ 2016-07-27 | 54489
+ 2016-07-28 | 54797
+ 2016-07-29 | 54951
+ 2016-07-30 | 55073
+ 2016-07-31 | 45845
+(31 rows)
+
+
+select *from clicksbg;
+4-clicksbg:
+    date    | all_c | bad_c
+------------+-------+-------
+ 2016-07-01 | 38705 |   274
+ 2016-07-02 | 55200 |   389
+ 2016-07-03 | 54866 |   401
+ 2016-07-04 | 54903 |   380
+ 2016-07-05 | 54585 |   423
+ 2016-07-06 | 54774 |   420
+ 2016-07-07 | 54740 |   360
+ 2016-07-08 | 55084 |   418
+ 2016-07-09 | 55236 |   410
+ 2016-07-10 | 54489 |   371
+ 2016-07-11 | 54497 |   403
+ 2016-07-12 | 54839 |   373
+ 2016-07-13 | 55180 |   383
+ 2016-07-14 | 55196 |   383
+ 2016-07-15 | 54962 |   408
+ 2016-07-16 | 54498 |   374
+ 2016-07-17 | 55907 |  1265
+ 2016-07-18 | 55589 |   374
+ 2016-07-19 | 55341 |   433
+ 2016-07-20 | 54557 |   383
+ 2016-07-21 | 55241 |   418
+ 2016-07-22 | 55206 |   406
+ 2016-07-23 | 54894 |   373
+ 2016-07-24 | 55100 |   431
+ 2016-07-25 | 54613 |   391
+ 2016-07-26 | 54378 |   396
+ 2016-07-27 | 54489 |   367
+ 2016-07-28 | 54797 |   393
+ 2016-07-29 | 54951 |   382
+ 2016-07-30 | 55073 |   397
+ 2016-07-31 | 45845 |   329
+(31 rows)
+
+select * from clicksbg_h;
+5-clicksbg_h:
+   date    | all_c | bad_c
+------------+-------+-------
+ 2016-07-17 | 55907 |  1265
