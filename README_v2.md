@@ -1,7 +1,7 @@
 # Project repository contents
-* **source_code.py** - The Python program that connects to the PostgreSQL database, executes the SQL queries and displays the results.
+* **source_code_v2.py** - The Python program that connects to the PostgreSQL database, executes the SQL queries and displays the results.
 * **README.md** - This read me file.
-* **new_logs_output.txt** - The text output of the `source_code.py`
+* **output plain text.txt** - The text output of the `source_code_v2.py`
 * **views queries and tables.txt** contains create view commands and their tables
 # How to run the program
 #### Step one: prepare the software
@@ -34,4 +34,4 @@ To load the data, cd into the vagrant directory and use the command `psql -d new
 * I have attached a full guide for create views commands and their output tables, the file named `views queries and tables.txt`. feel free to check it if you need to.
 #### step five: run the python file
 * press `ctrl + D` and run this command `$python  python source_code.py`
-* the terminal should now view the output of this code, like the output attached in the file `output.txt`
+* the terminal should now view the output of this code, like the output attached in the file `output plain text.txt`
